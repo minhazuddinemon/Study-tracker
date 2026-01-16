@@ -422,8 +422,8 @@
 
 	<!-- Header -->
 	<header class="glass sticky top-0 z-50">
-		<div class="max-w-6xl mx-auto px-6 py-4">
-			<div class="flex justify-between items-center">
+		<div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+			<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 				<div class="flex items-center gap-4">
 					<div
 						class="w-12 h-12 rounded-2xl gradient-primary flex items-center justify-center glow-primary"
@@ -436,12 +436,14 @@
 					</div>
 				</div>
 
-				<nav class="flex gap-1 p-1.5 bg-zinc-900 rounded-2xl border border-zinc-800">
+				<nav
+					class="flex w-full sm:w-auto gap-1 p-1.5 bg-zinc-900 rounded-2xl border border-zinc-800"
+				>
 					<Button
 						variant={!showDashboard ? 'default' : 'ghost'}
 						size="sm"
 						onclick={() => (showDashboard = false)}
-						class="rounded-xl"
+						class="flex-1 sm:flex-none justify-center rounded-xl"
 					>
 						<Clock class="w-4 h-4" />
 						Timer
@@ -453,7 +455,7 @@
 							showDashboard = true;
 							sessionStore.refreshToday();
 						}}
-						class="rounded-xl"
+						class="flex-1 sm:flex-none justify-center rounded-xl"
 					>
 						<LayoutDashboard class="w-4 h-4" />
 						Dashboard
@@ -463,14 +465,14 @@
 		</div>
 	</header>
 
-	<main class="max-w-6xl mx-auto px-6 py-8">
+	<main class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
 		{#if !showDashboard}
 			<!-- Timer View -->
 			<div class="space-y-8">
 				<ActiveTimer />
 
 				<Card class="p-6">
-					<div class="flex justify-between items-center mb-6">
+					<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
 						<div>
 							<h2 class="text-xl font-bold text-zinc-100">Your Tasks</h2>
 							<p class="text-sm text-zinc-500 mt-1">Select a task to start tracking</p>
@@ -556,12 +558,12 @@
 				</div>
 
 				<!-- Activity + Breakdown Layout -->
-				<div class="flex flex-col lg:flex-row gap-4 lg:items-stretch" style="min-height: 640px;">
+				<div class="flex flex-col lg:flex-row gap-4 lg:items-stretch lg:min-h-[640px]">
 					<!-- Time Breakdown Chart -->
 					<div class="lg:flex-2 lg:self-stretch">
 						<Card class="p-6 h-full flex flex-col">
 							<!-- Header with date navigation -->
-							<div class="flex items-center justify-between mb-6">
+							<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
 								<div class="flex items-center gap-3">
 									<div
 										class="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center"
@@ -577,7 +579,7 @@
 								</div>
 
 								<!-- Date Navigation -->
-								<div class="flex items-center gap-2">
+								<div class="flex flex-wrap items-center justify-start sm:justify-end gap-2">
 									<button
 										onclick={goToPreviousDay}
 										class="p-2 rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer"
