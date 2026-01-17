@@ -357,7 +357,7 @@
 	let maxBarValue = $derived(() => {
 		const data = barChartData();
 		const maxTotal = Math.max(...data.map((d) => d.total), 0);
-		return Math.max(maxTotal * 1.2, 10); // At least 10 minutes scale
+		return Math.max(maxTotal, 10); // At least 10 minutes scale
 	});
 
 	// Pie chart data for tasks
@@ -365,7 +365,7 @@
 		taskBreakdown().map((item) => ({
 			task: item.task.name,
 			minutes: item.duration / 60000,
-			color: `var(--color-task-${item.task.id})`
+			color: item.task.color
 		}))
 	);
 
@@ -402,8 +402,8 @@
 
 	let typeChartData = $derived(() =>
 		[
-			{ type: 'study', minutes: typeTotals().studyMinutes, color: 'var(--color-study)' },
-			{ type: 'other', minutes: typeTotals().otherMinutes, color: 'var(--color-other)' }
+			{ type: 'study', minutes: typeTotals().studyMinutes, color: '#8b5cf6' },
+			{ type: 'other', minutes: typeTotals().otherMinutes, color: '#f59e0b' }
 		].filter((item) => item.minutes > 0)
 	);
 </script>
@@ -558,7 +558,7 @@
 				</div>
 
 				<!-- Activity + Breakdown Layout -->
-				<div class="flex flex-col lg:flex-row gap-4 lg:items-stretch lg:min-h-[640px]">
+				<div class="flex flex-col lg:flex-row gap-4 lg:items-stretch lg:min-h-160">
 					<!-- Time Breakdown Chart -->
 					<div class="lg:flex-2 lg:self-stretch">
 						<Card class="p-6 h-full flex flex-col">
@@ -600,7 +600,7 @@
 										<!-- Calendar Dropdown -->
 										{#if showCalendar}
 											<div
-												class="absolute right-0 top-full mt-2 z-50 origin-top-right scale-110"
+												class="absolute left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-0 top-full mt-2 z-50"
 												transition:slide={{ duration: 200 }}
 												bind:this={calendarPopoverEl}
 											>
@@ -861,8 +861,7 @@
 
 	<footer class="py-8 text-center">
 		<p class="text-zinc-600 text-sm flex items-center justify-center gap-2">
-			<Database class="w-4 h-4" />
-			Minhaz Uddin • CUET CSE
+			Developed by Minhaz Uddin <br /> CUET CSE
 		</p>
 	</footer>
 </div>

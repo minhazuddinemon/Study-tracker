@@ -17,15 +17,10 @@
 	interface Props {
 		data: BarData[];
 		maxValue: number;
-		chartHeight?: number | string;
 		class?: string;
 	}
 
-	let { data, maxValue, chartHeight = 220, class: className = '' }: Props = $props();
-
-	let chartHeightValue = $derived(
-		typeof chartHeight === 'number' ? `${chartHeight}px` : chartHeight
-	);
+	let { data, maxValue, class: className = '' }: Props = $props();
 
 	let hoveredSegment = $state<{
 		barIndex: number;
@@ -87,14 +82,14 @@
 	}
 </script>
 
-<div class="w-full {className}" style="--chart-height: {chartHeightValue};">
-	<!-- Chart area -->
-	<div class="flex items-end gap-3 px-2" style="height: var(--chart-height);">
+<div class="w-full {className}">
+	<!-- Chart area - taller on mobile for better visibility -->
+	<div class="flex items-end gap-2 sm:gap-3 px-2 h-[280px] sm:h-[220px]">
 		{#each data as bar, barIndex}
 			<div class="flex-1 flex flex-col items-center h-full justify-end">
 				<!-- Total time label on top -->
 				{#if bar.total > 0}
-					<span class="text-xs text-zinc-400 font-medium mb-1">
+					<span class="text-[10px] sm:text-xs text-zinc-400 font-medium mb-1">
 						{formatTimeShort(bar.total * 60000)}
 					</span>
 				{/if}
@@ -105,7 +100,7 @@
 					{@const visibleSegments = bar.segments.filter((s) => s.value > 0)}
 					<div
 						class="w-full rounded-md overflow-hidden"
-						style="height: {barHeightPercent}%; min-height: 8px;"
+						style="height: {Math.max(barHeightPercent, 5)}%; min-height: 12px;"
 					>
 						{#each visibleSegments as segment, segmentIndex}
 							{@const segmentPercent = (segment.value / bar.total) * 100}
@@ -124,8 +119,8 @@
 					<div class="w-full h-1 bg-zinc-800 rounded-full"></div>
 				{/if}
 
-				<!-- X-axis label -->
-				<span class="text-xs text-zinc-500 mt-2 whitespace-nowrap">
+				<!-- X-axis label - smaller on mobile -->
+				<span class="text-[10px] sm:text-xs text-zinc-500 mt-2 whitespace-nowrap">
 					{bar.timeSlot.split('-')[0]}
 				</span>
 			</div>
