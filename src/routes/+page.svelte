@@ -421,7 +421,10 @@
 	</div>
 
 	<!-- Header -->
-	<header class="glass sticky top-0 z-50">
+	<header
+		class="glass sticky top-0 z-50"
+		style="-webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);"
+	>
 		<div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
 			<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 				<div class="flex items-center gap-4">

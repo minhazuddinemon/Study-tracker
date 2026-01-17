@@ -108,10 +108,16 @@ body {
 
 /* Glassmorphism effect - Dark */
 .glass {
-	background: rgba(24, 24, 27, 0.8);
-	backdrop-filter: blur(16px);
-	-webkit-backdrop-filter: blur(16px);
+	background: rgba(24, 24, 27, 0.95);
 	border: 1px solid rgba(63, 63, 70, 0.5);
+}
+
+@supports ((-webkit-backdrop-filter: blur(16px)) or (backdrop-filter: blur(16px))) {
+	.glass {
+		background: rgba(24, 24, 27, 0.8);
+		-webkit-backdrop-filter: blur(16px);
+		backdrop-filter: blur(16px);
+	}
 }
 
 /* Gradient backgrounds */

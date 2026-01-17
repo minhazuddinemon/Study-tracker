@@ -84,7 +84,7 @@
 
 <div class="w-full {className}">
 	<!-- Chart area - taller on mobile for better visibility -->
-	<div class="flex items-end gap-2 sm:gap-3 px-2 h-[280px] sm:h-[220px]">
+	<div class="flex items-end gap-2 sm:gap-3 px-2 h-70 sm:h-55">
 		{#each data as bar, barIndex}
 			<div class="flex-1 flex flex-col items-center h-full justify-end">
 				<!-- Total time label on top -->
