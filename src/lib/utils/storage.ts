@@ -4,7 +4,8 @@ import { getTodayDateString } from '$lib/utils/time';
 
 const STORAGE_KEYS = {
 	TASKS: 'study-tracker-tasks',
-	SESSIONS: 'study-tracker-sessions'
+	SESSIONS: 'study-tracker-sessions',
+	ACTIVE_TIMER: 'study-tracker-active-timer'
 } as const;
 
 // Tasks storage
@@ -103,5 +104,41 @@ export const sessionStorage = {
 	getSessionsInRange(startDate: string, endDate: string): TimerSession[] {
 		const sessions = this.getSessions();
 		return sessions.filter((session) => session.date >= startDate && session.date <= endDate);
+	}
+};
+
+type ActiveTimerSnapshot = {
+	taskId: string;
+	startTime: number;
+};
+
+export const activeTimerStorage = {
+	get(): ActiveTimerSnapshot | null {
+		if (!browser) return null;
+		try {
+			const data = localStorage.getItem(STORAGE_KEYS.ACTIVE_TIMER);
+			return data ? (JSON.parse(data) as ActiveTimerSnapshot) : null;
+		} catch (error) {
+			console.error('Error reading active timer from storage:', error);
+			return null;
+		}
+	},
+
+	save(snapshot: ActiveTimerSnapshot): void {
+		if (!browser) return;
+		try {
+			localStorage.setItem(STORAGE_KEYS.ACTIVE_TIMER, JSON.stringify(snapshot));
+		} catch (error) {
+			console.error('Error saving active timer to storage:', error);
+		}
+	},
+
+	clear(): void {
+		if (!browser) return;
+		try {
+			localStorage.removeItem(STORAGE_KEYS.ACTIVE_TIMER);
+		} catch (error) {
+			console.error('Error clearing active timer from storage:', error);
+		}
 	}
 };

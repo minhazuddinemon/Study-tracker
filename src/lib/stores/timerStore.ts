@@ -1,8 +1,9 @@
 import { writable } from 'svelte/store';
 import type { ActiveTimer, Task, TimerSession } from '$lib/types';
-import { taskStorage } from '$lib/utils/storage';
+import { activeTimerStorage, taskStorage } from '$lib/utils/storage';
 import { sessionStore } from '$lib/stores/sessionsStore';
 import { getTodayDateString } from '$lib/utils/time';
+import { browser } from '$app/environment';
 
 function createTimerStore() {
 	const { subscribe, update } = writable<ActiveTimer>({
@@ -13,6 +14,30 @@ function createTimerStore() {
 	});
 
 	let intervalId: number | null = null;
+
+	function startInterval(startTime: number) {
+		intervalId = window.setInterval(() => {
+			update((s) => ({
+				...s,
+				elapsed: Date.now() - startTime
+			}));
+		}, 1000);
+	}
+
+	if (browser) {
+		const saved = activeTimerStorage.get();
+		if (saved?.taskId && saved.startTime) {
+			const elapsed = Date.now() - saved.startTime;
+			startInterval(saved.startTime);
+			update((state) => ({
+				...state,
+				taskId: saved.taskId,
+				startTime: saved.startTime,
+				elapsed,
+				isRunning: true
+			}));
+		}
+	}
 
 	return {
 		subscribe,
@@ -27,12 +52,8 @@ function createTimerStore() {
 				const startTime = Date.now();
 
 				// Start updating elapsed time
-				intervalId = window.setInterval(() => {
-					update((s) => ({
-						...s,
-						elapsed: Date.now() - startTime
-					}));
-				}, 1000);
+				startInterval(startTime);
+				activeTimerStorage.save({ taskId, startTime });
 
 				return {
 					taskId,
@@ -65,6 +86,8 @@ function createTimerStore() {
 					sessionStore.addSession(session);
 				}
 
+				activeTimerStorage.clear();
+
 				return {
 					taskId: null,
 					startTime: null,
@@ -80,6 +103,7 @@ function createTimerStore() {
 					clearInterval(intervalId);
 					intervalId = null;
 				}
+				activeTimerStorage.clear();
 				return { ...state, isRunning: false };
 			});
 		},
@@ -89,12 +113,8 @@ function createTimerStore() {
 				if (state.taskId && state.startTime && !state.isRunning) {
 					const adjustedStartTime = Date.now() - state.elapsed;
 
-					intervalId = window.setInterval(() => {
-						update((s) => ({
-							...s,
-							elapsed: Date.now() - adjustedStartTime
-						}));
-					}, 1000);
+					startInterval(adjustedStartTime);
+					activeTimerStorage.save({ taskId: state.taskId, startTime: adjustedStartTime });
 
 					return {
 						...state,
