@@ -650,7 +650,6 @@
 									<CustomBarChart
 										data={barChartData()}
 										maxValue={maxBarValue()}
-										chartHeight="100%"
 										class="h-full"
 									/>
 								</div>
