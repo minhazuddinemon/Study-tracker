@@ -83,8 +83,8 @@
 </script>
 
 <div class="w-full {className}">
-	<!-- Chart area - fills parent height, with minimum height on mobile -->
-	<div class="flex items-end gap-2 sm:gap-3 px-2 h-full min-h-52 sm:min-h-44">
+	<!-- Chart area - fixed height on mobile, fills parent height on larger screens -->
+	<div class="flex items-end gap-2 sm:gap-3 px-2 h-64 sm:h-full min-h-64 sm:min-h-44">
 		{#each data as bar, barIndex}
 			<div class="flex-1 flex flex-col items-center h-full">
 				<div class="relative w-full flex-1 flex flex-col justify-end">
@@ -102,15 +102,15 @@
 						{@const barHeightPercent = maxValue > 0 ? (bar.total / maxValue) * 100 : 0}
 						{@const visibleSegments = bar.segments.filter((s) => s.value > 0)}
 						<div
-							class="w-full rounded-md overflow-hidden mt-auto"
-							style="height: {Math.max(barHeightPercent, 5)}%; min-height: 12px;"
+							class="w-full rounded-md overflow-hidden mt-auto min-h-4 sm:min-h-3"
+							style="height: {Math.max(barHeightPercent, 6)}%;"
 						>
 							{#each visibleSegments as segment, segmentIndex}
 								{@const segmentPercent = (segment.value / bar.total) * 100}
 								<!-- svelte-ignore a11y_no_static_element_interactions -->
 								<div
-									class="w-full cursor-pointer hover:brightness-110"
-									style="height: {segmentPercent}%; background-color: {segment.color}; min-height: 4px;"
+									class="w-full cursor-pointer hover:brightness-110 min-h-1.5 sm:min-h-1"
+									style="height: {segmentPercent}%; background-color: {segment.color};"
 									onmouseenter={(e) => handleMouseEnter(e, barIndex, segmentIndex, segment)}
 									onmousemove={handleMouseMove}
 									onmouseleave={handleMouseLeave}
