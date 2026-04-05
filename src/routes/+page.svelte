@@ -647,11 +647,7 @@
 								</div>
 							{:else}
 								<div class="rounded-xl bg-zinc-900/50 p-4 border border-zinc-800 flex-1">
-									<CustomBarChart
-										data={barChartData()}
-										maxValue={maxBarValue()}
-										class="h-full"
-									/>
+									<CustomBarChart data={barChartData()} maxValue={maxBarValue()} class="h-full" />
 								</div>
 
 								<!-- Legend -->
@@ -861,9 +857,9 @@
 		{/if}
 	</main>
 
-	<footer class="py-8 text-center">
+	<!-- <footer class="py-8 text-center">
 		<p class="text-zinc-600 text-sm flex items-center justify-center gap-2">
 			Developed by Minhaz Uddin <br /> CUET CSE
 		</p>
-	</footer>
+	</footer> -->
 </div>
